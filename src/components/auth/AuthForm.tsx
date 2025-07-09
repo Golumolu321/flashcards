@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { BookOpen, Mail, Lock, Eye, EyeOff, Sparkles } from 'lucide-react';
 
 export const AuthForm: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -29,66 +31,126 @@ export const AuthForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">StudyCard Creator</h1>
-          <p className="text-gray-600">Create and manage your study cards</p>
-        </div>
+    <div className="min-h-screen gradient-bg flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background decorations */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+      </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter your email"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter your password"
-            />
-          </div>
-
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
-              {error}
+      <div className="relative z-10 w-full max-w-md">
+        <div className="glass-effect rounded-2xl shadow-2xl p-8 animate-scale-in">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-2xl mb-4 backdrop-blur-sm">
+              <BookOpen className="w-8 h-8 text-white" />
             </div>
-          )}
+            <h1 className="text-3xl font-bold text-white mb-2 flex items-center justify-center gap-2">
+              StudyCard Creator
+              <Sparkles className="w-6 h-6 text-yellow-300" />
+            </h1>
+            <p className="text-white/80">
+              {isLogin ? 'Welcome back! Sign in to continue' : 'Create your account to get started'}
+            </p>
+          </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            {loading ? 'Loading...' : (isLogin ? 'Sign In' : 'Sign Up')}
-          </button>
-        </form>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Email Field */}
+            <div className="space-y-2">
+              <label htmlFor="email" className="block text-sm font-medium text-white/90">
+                Email Address
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:ring-2 focus:ring-white/30 focus:border-white/40 transition-all duration-200 backdrop-blur-sm"
+                  placeholder="Enter your email"
+                />
+              </div>
+            </div>
 
-        <div className="mt-6 text-center">
-          <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-blue-600 hover:text-blue-700 text-sm font-medium"
-          >
-            {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
-          </button>
+            {/* Password Field */}
+            <div className="space-y-2">
+              <label htmlFor="password" className="block text-sm font-medium text-white/90">
+                Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full pl-10 pr-12 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:ring-2 focus:ring-white/30 focus:border-white/40 transition-all duration-200 backdrop-blur-sm"
+                  placeholder="Enter your password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
+            </div>
+
+            {/* Error Message */}
+            {error && (
+              <div className="bg-red-500/20 border border-red-500/30 text-red-100 px-4 py-3 rounded-lg text-sm backdrop-blur-sm animate-fade-in">
+                {error}
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-white text-gray-900 py-3 px-4 rounded-lg font-semibold hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-white/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg"
+            >
+              {loading ? (
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900 mr-2"></div>
+                  <span className="loading-dots">Processing</span>
+                </div>
+              ) : (
+                isLogin ? 'Sign In' : 'Create Account'
+              )}
+            </button>
+          </form>
+
+          {/* Toggle Form */}
+          <div className="mt-8 text-center">
+            <button
+              onClick={() => setIsLogin(!isLogin)}
+              className="text-white/80 hover:text-white text-sm font-medium transition-colors duration-200 hover:underline"
+            >
+              {isLogin 
+                ? "Don't have an account? Create one" 
+                : "Already have an account? Sign in"
+              }
+            </button>
+          </div>
+
+          {/* Features Preview */}
+          <div className="mt-8 pt-6 border-t border-white/20">
+            <div className="grid grid-cols-2 gap-4 text-center">
+              <div className="text-white/80">
+                <div className="text-2xl font-bold text-white">AI</div>
+                <div className="text-xs">Powered</div>
+              </div>
+              <div className="text-white/80">
+                <div className="text-2xl font-bold text-white">∞</div>
+                <div className="text-xs">Cards</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
