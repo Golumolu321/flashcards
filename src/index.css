@@ -38,9 +38,11 @@
     @apply bg-white/80 backdrop-blur-md border border-white/20;
   }
   
-  .gradient-bg {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  }
+ .gradient-bg {
+  background: linear-gradient(135deg, #065f46 0%, #14b8a6 100%); /* Emerald-800 to Teal-500 */
+}
+
+
   
   .animate-fade-in {
     animation: fadeIn 0.6s ease-out;
